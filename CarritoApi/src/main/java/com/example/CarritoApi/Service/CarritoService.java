@@ -40,11 +40,18 @@ public class CarritoService {
     Usuario usuario = usuarioRepository.findById(usuarioId).orElse(null);
     if (usuario == null) return null;
 
-    Carrito carrito = new Carrito();
-    carrito.setUsuario(usuario);
-    carrito.setTotal(BigDecimal.ZERO);
-    carrito.setActivo(true);
-    return carritoRepository.save(carrito);
+    // Revisa si ya tiene un carrito activo
+    Carrito existente = carritoRepository.findByUsuarioIdAndActivoTrue(usuarioId);
+    if (existente != null) {
+        return existente; // Retorna el carrito actual si ya existe uno activo
+    }
+
+    // Si no existe, crea uno nuevo
+    Carrito nuevo = new Carrito();
+    nuevo.setUsuario(usuario);
+    nuevo.setTotal(BigDecimal.ZERO);
+    nuevo.setActivo(true);
+    return carritoRepository.save(nuevo);
 }
 
     // Agregar un producto al carrito (nuevo ítem o sumar cantidad si ya existe)
