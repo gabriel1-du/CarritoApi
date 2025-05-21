@@ -1,24 +1,28 @@
 package com.example.CarritoApi.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.example.CarritoApi.Model.Carrito;
 import com.example.CarritoApi.Model.ItemCarrito;
+import com.example.CarritoApi.Model.Usuario;
 import com.example.CarritoApi.Repository.CarritoRepository;
 import com.example.CarritoApi.Repository.ItemCarritoRepository;
+import com.example.CarritoApi.Repository.usuarioRepository;
 
 public class CarritoService {
 
     //Inyeccion de ambos repos
     @Autowired
     private CarritoRepository carritoRepository;
-
     @Autowired
     private ItemCarritoRepository itemCarritoRepository;
-
+    @Autowired
+    private usuarioRepository usuarioRepository;
+    
 
     // Obtener un carrito por ID
     public Carrito getById(Integer id) {
@@ -33,12 +37,15 @@ public class CarritoService {
 
     // Crear un carrito nuevo para un usuario (si no tiene uno activo)
     public Carrito crearCarrito(Integer usuarioId) {
-        Carrito carrito = new Carrito(); //Creacion de objeto carrito
-        carrito.setUsuarioId(usuarioId);
-        carrito.setTotal(BigDecimal.ZERO);
-        carrito.setActivo(true);
-        return carritoRepository.save(carrito);
-    }
+    Usuario usuario = usuarioRepository.findById(usuarioId).orElse(null);
+    if (usuario == null) return null;
+
+    Carrito carrito = new Carrito();
+    carrito.setUsuario(usuario);
+    carrito.setTotal(BigDecimal.ZERO);
+    carrito.setActivo(true);
+    return carritoRepository.save(carrito);
+}
 
     // Agregar un producto al carrito (nuevo ítem o sumar cantidad si ya existe)
     public Carrito agregarProducto(Integer carritoId, Integer productoId, int cantidad) {
