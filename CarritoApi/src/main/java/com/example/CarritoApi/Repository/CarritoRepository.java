@@ -8,4 +8,6 @@ import com.example.CarritoApi.Model.Carrito;
 @Repository
 public interface CarritoRepository extends JpaRepository<Carrito, Integer>{
 
+    Carrito findByUsuarioIdAndActivoTrue(Integer usuarioId);
+
 }
