@@ -46,6 +46,8 @@ public class CarritoController {
         }
     }
 
+
+
      // Obtener el carrito activo de un usuario 
     @GetMapping("/usuario/{usuarioId}")
     public ResponseEntity<?> getByUsuario(@PathVariable Integer usuarioId) {
@@ -69,10 +71,10 @@ public class CarritoController {
     }
 
     // Agregar un producto al carrito 
-    @PostMapping("/{carritoId}/producto")
+    @PostMapping("/{carritoId}/producto/{productoId}")
     public ResponseEntity<?> agregarProducto(
         @PathVariable Integer carritoId,
-        @RequestParam Integer productoId,
+        @PathVariable Integer productoId,
         @RequestParam Integer cantidad
     ) {
         Carrito actualizado = carritoService.agregarProducto(carritoId, productoId, cantidad);
@@ -80,21 +82,6 @@ public class CarritoController {
             return ResponseEntity.ok(actualizado);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Carrito no encontrado");
-        }
-    }
-
-    // Actualizar la cantidad de un producto en el carrito
-    @PutMapping("/{carritoId}/producto/{productoId}")
-    public ResponseEntity<?> actualizarCantidad(
-        @PathVariable Integer carritoId,
-        @PathVariable Integer productoId,
-        @RequestParam Integer nuevaCantidad
-    ) {
-        Carrito actualizado = carritoService.actualizarCantidad(carritoId, productoId, nuevaCantidad);
-        if (actualizado != null) {
-            return ResponseEntity.ok(actualizado);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Producto no encontrado en el carrito");
         }
     }
 
