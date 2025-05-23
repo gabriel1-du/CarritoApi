@@ -1,5 +1,7 @@
 package com.example.CarritoApi.Model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -26,9 +28,12 @@ public class ItemCarrito {
     @Column(name = "item_id")
     private Integer id;
 
+    //Coneccion a carrito
     @ManyToOne
     @JoinColumn(name = "carrito_id", nullable = false)
+    @JsonBackReference
     private Carrito carrito;
+
 
     @Column(name = "producto_id", nullable = false)
     private Integer productoId;

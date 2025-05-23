@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.example.CarritoApi.Model.Carrito;
 import com.example.CarritoApi.Model.ItemCarrito;
@@ -13,6 +14,7 @@ import com.example.CarritoApi.Repository.CarritoRepository;
 import com.example.CarritoApi.Repository.ItemCarritoRepository;
 import com.example.CarritoApi.Repository.usuarioRepository;
 
+@Service
 public class CarritoService {
 
     //Inyeccion de ambos repos

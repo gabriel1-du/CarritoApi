@@ -20,17 +20,29 @@ import com.example.CarritoApi.Service.CarritoService;
 public class CarritoController {
 
 
-     @Autowired
+    @Autowired
     private CarritoService carritoService; //INYECCION del REpo
+
+
 
        // Obtener un carrito por su ID 
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable Integer id) {
-        Carrito carrito = carritoService.getById(id);
-        if (carrito != null) {
+        try {
+            Carrito carrito = carritoService.getById(id);
+            if (carrito != null) {
             return ResponseEntity.ok(carrito);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Carrito no encontrado");
+                } else {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                                 .body("Carrito no encontrado");
+                        }
+        } catch (Exception e) {
+            // Imprime en consola el stack completo
+            e.printStackTrace();
+            // Devuelve el mensaje para ver qué excepción saltó
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                             .body("Error interno: " + e.getClass().getSimpleName()
+                                   + " – " + e.getMessage());
         }
     }
 
